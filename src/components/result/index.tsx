@@ -4,22 +4,23 @@ interface ResultProps {
     imc: string | null;
 }
 
-const getColorClass = (imc: number | null) => {
-    if (imc === null) return '';
-    if (imc < 18.5) return styles.underweight;
-    if (imc >= 18.5 && imc <= 24.9) return styles.normalWeight;
-    if (imc >= 25 && imc <= 29.9) return styles.overweight;
-    if (imc >= 30 && imc <= 34.9) return styles.obesity1;
-    if (imc >= 35 && imc <= 39.9) return styles.obesity2;
-    return styles.obesity3;
+const getImcInfo = (imc: number | null) => {
+    if (imc === null) return { className: '', label: 'IMC inválido' };
+    if (imc < 18.5) return { className: styles.underweight, label: 'Abaixo do peso' };
+    if (imc >= 18.5 && imc <= 24.9) return { className: styles.normalWeight, label: 'Peso ideal' };
+    if (imc >= 25 && imc <= 29.9) return { className: styles.overweight, label: 'Sobrepeso' };
+    if (imc >= 30 && imc <= 34.9) return { className: styles.obesity1, label: 'Obesidade grau I' };
+    if (imc >= 35 && imc <= 39.9) return { className: styles.obesity2, label: 'Obesidade grau II' };
+    return { className: styles.obesity3, label: 'Obesidade grau III' };
 };
 
 const Result: React.FC<ResultProps> = ({ imc }) => {
     const imcValue = imc ? parseFloat(imc) : null;
-    const colorClass = getColorClass(imcValue);
+    const { className, label } = getImcInfo(imcValue);
 
     return (
-        <div className={`${styles.resultContainer} ${colorClass}`}>
+        <div className={`${styles.resultContainer} ${className}`}>
+            <p>{label}</p>
             <p>{imc}</p>
         </div>
     );
